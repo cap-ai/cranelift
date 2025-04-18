@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cranelift Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Add a nice font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Theme toggle button -->
+    <button id="theme-toggle" class="theme-toggle" title="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Search overlay -->
+    <div id="search-overlay" class="search-overlay">
+        <div class="search-container">
+            <div class="search-header">
+                <h2><i class="fas fa-search"></i> Search Documentation</h2>
+                <button id="close-search" class="close-search"><i class="fas fa-times"></i></button>
+            </div>
+            <input type="text" id="search-input" placeholder="Type to search...">
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo">CL</div>
+                    <h2>Cranelift</h2>
+                </div>
+                <p class="version">v14.2</p>
+                <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-search">
+                <button id="search-btn" class="search-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Quick Search...</span>
+                    <span class="keyboard-shortcut">⌘K</span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#getting-started"><i class="fas fa-play"></i> Getting Started</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> Key Features</a></li>
+                    <li><a href="#architecture"><i class="fas fa-layer-group"></i> Architecture</a></li>
+                    <li><a href="#api"><i class="fas fa-code"></i> API Reference</a></li>
+                    <li class="nav-group">
+                        <div class="nav-group-header">
+                            <span class="nav-group-title"><i class="fas fa-book"></i> Developer Guides</span>
+                            <i class="fas fa-chevron-down nav-group-toggle"></i>
+                        </div>
+                        <ul class="nav-group-items">
+                            <li><a href="#backends"><i class="fas fa-cogs"></i> Backend Development</a></li>
+                            <li><a href="#isle"><i class="fas fa-language"></i> ISLE DSL</a></li>
+                            <li><a href="#optimization"><i class="fas fa-tachometer-alt"></i> Optimization Passes</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#examples"><i class="fas fa-laptop-code"></i> Examples</a></li>
+                    <li><a href="#performance"><i class="fas fa-chart-line"></i> Performance</a></li>
+                    <li><a href="#community"><i class="fas fa-users"></i> Community</a></li>
+                    <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="https://github.com/bytecodealliance/wasmtime/tree/main/cranelift" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://bytecodealliance.org/" target="_blank" title="Bytecode Alliance"><i class="fas fa-globe"></i></a>
+                <a href="https://bytecodealliance.zulipchat.com/" target="_blank" title="Zulip Chat"><i class="fas fa-comments"></i></a>
+                <a href="#" id="download-docs" title="Download Documentation"><i class="fas fa-download"></i></a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <div class="progress-bar" id="progress-bar"></div>
+            
+            <div class="content-header" id="home">
+                <h1>Cranelift Documentation</h1>
+                <div class="content-header-meta">
+                    <span class="badge">Latest: v14.2</span>
+                    <span class="badge secondary">Rust</span>
+                    <span class="badge tertiary">JIT Compiler</span>
+                </div>
+                <p class="intro-text">
+                    A fast, reliable code generator focused on WebAssembly and written in Rust.
+                </p>
+            </div>
+
+            <div class="table-of-contents" id="toc">
+                <div class="toc-header">
+                    <h3>On this page</h3>
+                    <button id="toc-toggle" class="toc-toggle"><i class="fas fa-times"></i></button>
+                </div>
+                <ul id="toc-list"></ul>
+            </div>
+
+            <section class="content-section">
+                <h2>What is Cranelift?</h2>
+                <p>
+                    Cranelift is an optimizing compiler backend developed by the Bytecode Alliance, written in Rust. Unlike traditional compiler backends 
+                    such as LLVM that focus primarily on ahead-of-time compilation, Cranelift specifically targets just-in-time compilation with an 
+                    explicit goal of achieving short compile times.
+                </p>
+                <p>
+                    The project started in 2016 (formerly known as Cretonne) and has evolved into a robust, secure, and relatively simple compiler 
+                    framework that converts target-independent intermediate representations into executable machine code. Cranelift currently supports 
+                    multiple instruction set architectures including x86-64, AArch64, RISC-V, and IBM z/Architecture.
+                </p>
+
+                <div class="info-box">
+                    <div class="info-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="info-content">
+                        <h3>Quick Info</h3>
+                        <ul>
+                            <li><strong>Project:</strong> Cranelift</li>
+                            <li><strong>Organization:</strong> Bytecode Alliance</li>
+                            <li><strong>Language:</strong> Rust</li>
+                            <li><strong>Focus:</strong> Just-in-Time (JIT) compilation</li>
+                            <li><strong>Architectures:</strong> x86-64, AArch64, RISC-V, IBM z/Architecture</li>
+                            <li><strong>GitHub:</strong> <a href="https://github.com/bytecodealliance/wasmtime/tree/main/cranelift" target="_blank">bytecodealliance/wasmtime/cranelift</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="features">
+                <h2>Key Features</h2>
+                <div class="tab-container">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-tab="features-overview">Overview</button>
+                        <button class="tab-btn" data-tab="features-comparison">Comparison with LLVM</button>
+                        <button class="tab-btn" data-tab="features-backends">Backend Support</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="features-overview">
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                                <h3>Fast Compilation</h3>
+                                <p>Optimized for short compilation times, making it ideal for just-in-time compilation scenarios.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                                <h3>Multiple ISA Support</h3>
+                                <p>Supports x86-64, AArch64, RISC-V, and IBM z/Architecture with a unified backend structure.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-vector-square"></i></div>
+                                <h3>SIMD Support</h3>
+                                <p>Comprehensive support for vectorized operations across supported architectures.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                                <h3>Security-Focused</h3>
+                                <p>Built with security considerations from the ground up, essential for WebAssembly use cases.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+                                <h3>CLIF IR</h3>
+                                <p>A target-independent intermediate representation designed for efficient compilation.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-language"></i></div>
+                                <h3>ISLE DSL</h3>
+                                <p>Instruction Selection Language for simplified backend development and maintenance.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="features-comparison">
+                        <h3>Cranelift vs. LLVM</h3>
+                        <div class="comparison-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Cranelift</th>
+                                        <th>LLVM</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Primary Focus</td>
+                                        <td>JIT compilation speed</td>
+                                        <td>Thorough optimization</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Implementation Language</td>
+                                        <td>Rust</td>
+                                        <td>C++</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code Size</td>
+                                        <td>Smaller (~100K LOC)</td>
+                                        <td>Larger (~1M+ LOC)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Compilation Speed</td>
+                                        <td>Faster</td>
+                                        <td>Slower</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code Quality</td>
+                                        <td>Good</td>
+                                        <td>Excellent</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Memory Usage</td>
+                                        <td>Lower</td>
+                                        <td>Higher</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Target Architecture Support</td>
+                                        <td>4 primary targets</td>
+                                        <td>Many targets</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="features-backends">
+                        <h3>Supported Architectures</h3>
+                        <p>Cranelift supports the following target architectures:</p>
+                        
+                        <div class="architecture-cards">
+                            <div class="arch-card">
+                                <h4>x86-64</h4>
+                                <p>Full support for x86-64 architecture with a focus on modern instruction set extensions like AVX and SSE.</p>
+                                <div class="arch-status complete">
+                                    <i class="fas fa-check-circle"></i> Complete
+                                </div>
+                            </div>
+                            <div class="arch-card">
+                                <h4>AArch64</h4>
+                                <p>Support for ARM 64-bit architecture with NEON SIMD operations and other ARMv8 features.</p>
+                                <div class="arch-status complete">
+                                    <i class="fas fa-check-circle"></i> Complete
+                                </div>
+                            </div>
+                            <div class="arch-card">
+                                <h4>RISC-V</h4>
+                                <p>Support for the open RISC-V instruction set architecture, including RV64GC features.</p>
+                                <div class="arch-status in-progress">
+                                    <i class="fas fa-spinner"></i> In Progress
+                                </div>
+                            </div>
+                            <div class="arch-card">
+                                <h4>IBM z/Architecture</h4>
+                                <p>Support for s390x mainframe architecture with vector facility.</p>
+                                <div class="arch-status in-progress">
+                                    <i class="fas fa-spinner"></i> In Progress
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="getting-started">
+                <h2>Getting Started</h2>
+                <p>
+                    To use Cranelift in your Rust project, add the appropriate crates to your <code>Cargo.toml</code>:
+                </p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>Cargo.toml</span>
+                        <button class="copy-btn" data-clipboard-target="#cargo-toml">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <pre><code id="cargo-toml">[dependencies]
+cranelift = "0.100.0"
+cranelift-module = "0.100.0"
+cranelift-jit = "0.100.0"</code></pre>
+                </div>
+                <p>
+                    Here's a simple example of using Cranelift to generate a function that adds two integers:
+                </p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>main.rs</span>
+                        <button class="copy-btn" data-clipboard-target="#example-code">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <pre><code id="example-code">use cranelift::prelude::*;
+use cranelift_module::{Linkage, Module};
+use cranelift_jit::{JITBuilder, JITModule};
+
+// Create JIT instance
+let mut builder = JITBuilder::new(cranelift_module::default_libcall_names());
+let mut module = JITModule::new(builder);
+let mut ctx = module.make_context();
+
+// Define the function signature
+let mut sig = module.make_signature();
+sig.params.push(AbiParam::new(types::I32));
+sig.params.push(AbiParam::new(types::I32));
+sig.returns.push(AbiParam::new(types::I32));
+
+// Create the function and build it
+let func_id = module.declare_function("add", Linkage::Export, &sig).unwrap();
+ctx.func.signature = sig;
+
+let mut func = Function::with_name_signature(ExternalName::user(0, 0), sig);
+let mut builder_ctx = FunctionBuilderContext::new();
+let mut builder = FunctionBuilder::new(&mut func, &mut builder_ctx);
+
+// Build the function body
+let block0 = builder.create_block();
+builder.append_block_params_for_function_params(block0);
+builder.switch_to_block(block0);
+
+let param0 = builder.block_params(block0)[0];
+let param1 = builder.block_params(block0)[1];
+let sum = builder.ins().iadd(param0, param1);
+builder.ins().return_(&[sum]);
+
+builder.finalize();
+
+// Finalize and execute
+module.define_function(func_id, &ctx).unwrap();
+module.finalize_definitions().unwrap();
+
+// Get and call the JIT-compiled function
+let code = module.get_finalized_function(func_id);
+let add = unsafe { std::mem::transmute::<_, fn(i32, i32) -> i32>(code) };
+let result = add(5, 6);
+assert_eq!(result, 11);</code></pre>
+                </div>
+
+                <div class="callout-box warning">
+                    <div class="callout-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="callout-content">
+                        <h3>Important Note</h3>
+                        <p>The <code>std::mem::transmute</code> function used in this example is unsafe. In production code, ensure you're managing memory safely and following Rust's safety guidelines.</p>
+                    </div>
+                </div>
+
+                <div class="steps-container">
+                    <h3>Quick Start Steps</h3>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Add dependencies</h4>
+                                <p>Include Cranelift crates in your Cargo.toml file</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Create a JIT compiler</h4>
+                                <p>Initialize the JIT module and context</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Define function signature</h4>
+                                <p>Create the function type with parameters and return types</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Build the function</h4>
+                                <p>Use the function builder to construct the function body</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Compile and execute</h4>
+                                <p>Finalize the function and call it</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="architecture">
+                <h2>Architecture</h2>
+                <p>
+                    Cranelift uses a multi-phase compilation pipeline that balances compilation speed with code quality. The design prioritizes modularity, allowing different parts of the pipeline to be reused or replaced as needed.
+                </p>
+                
+                <div class="expandable-section">
+                    <div class="expandable-header">
+                        <h3>Compilation Pipeline</h3>
+                        <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="expandable-content">
+                        <ol class="numbered-list">
+                            <li>
+                                <strong>Frontend</strong> - Converts source format (like WebAssembly) to Cranelift IR (CLIF)
+                                <ul>
+                                    <li>Parses input code and translates to CLIF</li>
+                                    <li>Performs initial validation</li>
+                                    <li>Sets up control flow graph</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Middle-end</strong> - Performs target-independent optimizations
+                                <ul>
+                                    <li>Constant folding and propagation</li>
+                                    <li>Dead code elimination</li>
+                                    <li>Common subexpression elimination</li>
+                                    <li>Control flow optimizations</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Backend</strong> - Target-specific processing
+                                <ul>
+                                    <li>Instruction selection using ISLE patterns</li>
+                                    <li>Register allocation</li>
+                                    <li>Instruction scheduling</li>
+                                    <li>Code emission</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="diagram-container">
+                    <h3>Compilation Pipeline</h3>
+                    <div class="diagram">
+                        <div class="diagram-box source">Source</div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-box frontend">Frontend</div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-box ir">CLIF IR</div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-box optimizer">Optimizer</div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-box backend">Backend</div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-box output">Machine Code</div>
+                    </div>
+                </div>
+
+                <div class="expandable-section">
+                    <div class="expandable-header">
+                        <h3>CLIF Intermediate Representation</h3>
+                        <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="expandable-content">
+                        <p>
+                            Cranelift IR (CLIF) is a low-level, SSA-based intermediate representation that serves as the core of Cranelift's compilation process. It has the following key characteristics:
+                        </p>
+                        <ul>
+                            <li><strong>Static Single Assignment (SSA) form</strong> - Each variable is assigned exactly once</li>
+                            <li><strong>Control Flow Graph</strong> - Code is organized into basic blocks with explicit control flow</li>
+                            <li><strong>Rich type system</strong> - Supports various integer types, floating point, SIMD vectors, and references</li>
+                            <li><strong>Platform-neutral</strong> - Independent of any specific hardware architecture</li>
+                            <li><strong>Human-readable text format</strong> - Makes debugging and development easier</li>
+                        </ul>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Example CLIF IR</span>
+                                <button class="copy-btn" data-clipboard-target="#clif-example">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code id="clif-example">function %add(i32, i32) -> i32 {
+block0(v0: i32, v1: i32):
+    v2 = iadd v0, v1
+    return v2
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="performance">
+                <h2>Performance</h2>
+                <p>
+                    Cranelift is designed with performance in mind, particularly focusing on compilation speed over absolute code quality. This makes it especially suitable for JIT compilation scenarios where compilation time is part of the end-user experience.
+                </p>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Compilation Time Comparison</h3>
+                        <p>Cranelift vs. LLVM (lower is better)</p>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="chart-row">
+                            <div class="chart-label">Small Functions</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar cranelift" style="width: 15%;">
+                                    <span>15ms</span>
+                                </div>
+                                <div class="chart-bar llvm" style="width: 55%;">
+                                    <span>55ms</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-row">
+                            <div class="chart-label">Medium Functions</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar cranelift" style="width: 35%;">
+                                    <span>35ms</span>
+                                </div>
+                                <div class="chart-bar llvm" style="width: 85%;">
+                                    <span>85ms</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-row">
+                            <div class="chart-label">Large Functions</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar cranelift" style="width: 60%;">
+                                    <span>60ms</span>
+                                </div>
+                                <div class="chart-bar llvm" style="width: 100%;">
+                                    <span>100ms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color cranelift"></div>
+                            <div>Cranelift</div>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color llvm"></div>
+                            <div>LLVM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout-box success">
+                    <div class="callout-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="callout-content">
+                        <h3>Key Performance Characteristics</h3>
+                        <ul>
+                            <li><strong>Fast compilation times</strong> - 3-5x faster than LLVM for many workloads</li>
+                            <li><strong>Lower memory footprint</strong> - Uses significantly less memory during compilation</li>
+                            <li><strong>Good but not optimal code quality</strong> - Generated code performs well but prioritizes compilation speed over maximum optimization</li>
+                            <li><strong>Predictable latency</strong> - More consistent compilation times across different code patterns</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="examples">
+                <h2>Examples</h2>
+                <p>
+                    Explore these examples to understand how to use Cranelift in different scenarios.
+                </p>
+
+                <div class="expandable-section">
+                    <div class="expandable-header">
+                        <h3>Basic Arithmetic Function</h3>
+                        <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="expandable-content">
+                        <p>This example shows how to create a function that computes <code>(a + b) * c</code>:</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>arithmetic.rs</span>
+                                <button class="copy-btn" data-clipboard-target="#arithmetic-example">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code id="arithmetic-example">use cranelift::prelude::*;
+use cranelift_module::{Linkage, Module};
+use cranelift_jit::{JITBuilder, JITModule};
+
+fn main() {
+    // Create JIT instance
+    let mut builder = JITBuilder::new(cranelift_module::default_libcall_names());
+    let mut module = JITModule::new(builder);
+    let mut ctx = module.make_context();
+
+    // Define the function signature (a: i32, b: i32, c: i32) -> i32
+    let mut sig = module.make_signature();
+    sig.params.push(AbiParam::new(types::I32));
+    sig.params.push(AbiParam::new(types::I32));
+    sig.params.push(AbiParam::new(types::I32));
+    sig.returns.push(AbiParam::new(types::I32));
+
+    // Create the function
+    let func_id = module.declare_function("compute", Linkage::Export, &sig).unwrap();
+    ctx.func.signature = sig;
+
+    let mut func = Function::with_name_signature(ExternalName::user(0, 0), sig);
+    let mut builder_ctx = FunctionBuilderContext::new();
+    let mut builder = FunctionBuilder::new(&mut func, &mut builder_ctx);
+
+    // Build function body: (a + b) * c
+    let block0 = builder.create_block();
+    builder.append_block_params_for_function_params(block0);
+    builder.switch_to_block(block0);
+
+    let a = builder.block_params(block0)[0];
+    let b = builder.block_params(block0)[1];
+    let c = builder.block_params(block0)[2];
+    
+    let sum = builder.ins().iadd(a, b);
+    let product = builder.ins().imul(sum, c);
+    
+    builder.ins().return_(&[product]);
+    builder.finalize();
+
+    // Finalize and execute
+    module.define_function(func_id, &ctx).unwrap();
+    module.finalize_definitions().unwrap();
+
+    // Get and call the JIT-compiled function
+    let code = module.get_finalized_function(func_id);
+    let compute = unsafe { std::mem::transmute::<_, fn(i32, i32, i32) -> i32>(code) };
+    
+    let result = compute(5, 6, 7);
+    println!("(5 + 6) * 7 = {}", result); // Should print 77
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="expandable-section">
+                    <div class="expandable-header">
+                        <h3>Conditional Branching</h3>
+                        <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="expandable-content">
+                        <p>This example demonstrates how to create a function with conditional branching to implement a simple max function:</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>max.rs</span>
+                                <button class="copy-btn" data-clipboard-target="#branch-example">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code id="branch-example">use cranelift::prelude::*;
+use cranelift_module::{Linkage, Module};
+use cranelift_jit::{JITBuilder, JITModule};
+
+fn main() {
+    // Create JIT instance
+    let mut builder = JITBuilder::new(cranelift_module::default_libcall_names());
+    let mut module = JITModule::new(builder);
+    let mut ctx = module.make_context();
+
+    // Define the function signature: max(a: i32, b: i32) -> i32
+    let mut sig = module.make_signature();
+    sig.params.push(AbiParam::new(types::I32));
+    sig.params.push(AbiParam::new(types::I32));
+    sig.returns.push(AbiParam::new(types::I32));
+
+    // Create the function
+    let func_id = module.declare_function("max", Linkage::Export, &sig).unwrap();
+    ctx.func.signature = sig;
+
+    let mut func = Function::with_name_signature(ExternalName::user(0, 0), sig);
+    let mut builder_ctx = FunctionBuilderContext::new();
+    let mut builder = FunctionBuilder::new(&mut func, &mut builder_ctx);
+
+    // Create blocks for the function
+    let entry_block = builder.create_block();
+    let a_gt_b_block = builder.create_block();
+    let b_gt_a_block = builder.create_block();
+
+    // Fill entry block
+    builder.append_block_params_for_function_params(entry_block);
+    builder.switch_to_block(entry_block);
+    
+    let a = builder.block_params(entry_block)[0];
+    let b = builder.block_params(entry_block)[1];
+    
+    // Compare a and b
+    let condition = builder.ins().icmp(IntCC::SignedGreaterThan, a, b);
+    builder.ins().brif(condition, a_gt_b_block, &[], b_gt_a_block, &[]);
+
+    // Fill a > b block
+    builder.switch_to_block(a_gt_b_block);
+    builder.ins().return_(&[a]);
+    
+    // Fill b >= a block
+    builder.switch_to_block(b_gt_a_block);
+    builder.ins().return_(&[b]);
+    
+    builder.finalize();
+
+    // Finalize and execute
+    module.define_function(func_id, &ctx).unwrap();
+    module.finalize_definitions().unwrap();
+
+    // Get and call the JIT-compiled function
+    let code = module.get_finalized_function(func_id);
+    let max_func = unsafe { std::mem::transmute::<_, fn(i32, i32) -> i32>(code) };
+    
+    println!("max(5, 10) = {}", max_func(5, 10)); // Should print 10
+    println!("max(20, 7) = {}", max_func(20, 7)); // Should print 20
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="community">
+                <h2>Community</h2>
+                <p>
+                    Cranelift is developed as part of the Bytecode Alliance, a nonprofit organization dedicated to creating 
+                    secure new software foundations built on WebAssembly and WebAssembly System Interface (WASI).
+                </p>
+                
+                <div class="link-cards">
+                    <a href="https://github.com/bytecodealliance/wasmtime/tree/main/cranelift" class="link-card">
+                        <div class="link-card-icon"><i class="fab fa-github"></i></div>
+                        <h3>GitHub Repository</h3>
+                        <p>Source code, issues, and pull requests</p>
+                    </a>
+                    <a href="https://bytecodealliance.zulipchat.com/" class="link-card">
+                        <div class="link-card-icon"><i class="fas fa-comments"></i></div>
+                        <h3>Zulip Chat</h3>
+                        <p>Real-time discussions with developers</p>
+                    </a>
+                    <a href="https://bytecodealliance.org/" class="link-card">
+                        <div class="link-card-icon"><i class="fas fa-globe"></i></div>
+                        <h3>Bytecode Alliance</h3>
+                        <p>Parent organization website</p>
+                    </a>
+                    <a href="https://docs.rs/cranelift/latest/cranelift/" class="link-card">
+                        <div class="link-card-icon"><i class="fas fa-book"></i></div>
+                        <h3>API Documentation</h3>
+                        <p>Detailed API reference on docs.rs</p>
+                    </a>
+                </div>
+
+                <div class="contributor-section">
+                    <h3>How to Contribute</h3>
+                    <div class="steps-container horizontal">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Find an Issue</h4>
+                                <p>Look for issues labeled with "good first issue" or "help wanted"</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Join the Discussion</h4>
+                                <p>Engage in Zulip chat to discuss your intended contributions</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Submit a PR</h4>
+                                <p>Fork the repository, make changes, and submit a pull request</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Review Process</h4>
+                                <p>Work with maintainers to refine your contribution</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="faq">
+                <h2>Frequently Asked Questions</h2>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>What is the difference between Cranelift and LLVM?</h3>
+                            <button class="accordion-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Cranelift and LLVM have different design goals. LLVM prioritizes generating the most optimized code possible, often at the expense of compilation time. Cranelift, on the other hand, focuses on fast compilation times for just-in-time compilation scenarios, with good but not exhaustive optimizations.</p>
+                            <p>Cranelift is also written in Rust (versus LLVM's C++), has a smaller codebase, and is designed with a focus on security and WebAssembly compilation use cases.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>Which architectures does Cranelift support?</h3>
+                            <button class="accordion-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Cranelift currently supports:</p>
+                            <ul>
+                                <li>x86-64</li>
+                                <li>AArch64 (ARM 64-bit)</li>
+                                <li>RISC-V</li>
+                                <li>IBM z/Architecture (s390x)</li>
+                            </ul>
+                            <p>Support for additional architectures is planned or in development.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>How do I use Cranelift in my Rust project?</h3>
+                            <button class="accordion-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="accordion-content">
+                            <p>To use Cranelift in a Rust project, add the appropriate crates to your Cargo.toml:</p>
+                            <pre><code>[dependencies]
+cranelift = "0.100.0"
+cranelift-module = "0.100.0"
+cranelift-jit = "0.100.0"</code></pre>
+                            <p>You can then use Cranelift to generate code at runtime. The cranelift-jit crate provides a simple API for JIT compilation.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>Is Cranelift used in any production systems?</h3>
+                            <button class="accordion-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Yes, Cranelift is used in several production systems:</p>
+                            <ul>
+                                <li><strong>Wasmtime</strong> - A standalone WebAssembly runtime</li>
+                                <li><strong>Fastly's Compute@Edge</strong> - A serverless compute platform</li>
+                                <li><strong>Firefox</strong> - Used for some WebAssembly compilation</li>
+                                <li><strong>Various WebAssembly-based projects</strong> - Including blockchain systems and edge computing platforms</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>What is ISLE and how is it used in Cranelift?</h3>
+                            <button class="accordion-toggle"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="accordion-content">
+                            <p>ISLE (Instruction Selection/Lowering Expressions) is a domain-specific language (DSL) used in Cranelift for instruction selection during code generation. It allows Cranelift developers to write declarative rules for matching and transforming IR patterns into target-specific machine instructions.</p>
+                            <p>ISLE makes it easier to develop and maintain different architecture backends by providing a concise, declarative way to specify instruction selection rules. This approach helps ensure correctness and reduces the complexity of backend code.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="content-footer">
+                <div class="feedback-section">
+                    <h3>Was this documentation helpful?</h3>
+                    <div class="feedback-buttons">
+                        <button class="feedback-btn" id="feedback-yes"><i class="fas fa-thumbs-up"></i> Yes</button>
+                        <button class="feedback-btn" id="feedback-no"><i class="fas fa-thumbs-down"></i> No</button>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/bytecodealliance/wasmtime/tree/main/cranelift" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://bytecodealliance.org/" target="_blank">
+                        <i class="fas fa-home"></i> Bytecode Alliance
+                    </a>
+                    <a href="https://bytecodealliance.zulipchat.com/" target="_blank">
+                        <i class="fas fa-comments"></i> Community Chat
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div class="toast" id="feedback-toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Thank you for your feedback!</span>
+        </div>
+        <div class="toast-close" id="toast-close">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const sidebarNav = document.getElementById('sidebar-nav');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebarNav.classList.toggle('show');
+            mobileMenuToggle.classList.toggle('active');
+        });
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Get the target tab content id
+                const tabId = button.getAttribute('data-tab');
+                
+                // Deactivate all tabs and tab contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                
+                // Activate the clicked tab and its content
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Expandable sections
+        const expandButtons = document.querySelectorAll('.expand-btn');
+        
+        expandButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const section = button.closest('.expandable-section');
+                section.classList.toggle('expanded');
+                
+                const icon = button.querySelector('i');
+                if (section.classList.contains('expanded')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Accordion functionality
+        const accordionToggles = document.querySelectorAll('.accordion-toggle');
+        
+        accordionToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const accordionItem = toggle.closest('.accordion-item');
+                accordionItem.classList.toggle('active');
+                
+                const icon = toggle.querySelector('i');
+                if (accordionItem.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Copy code buttons
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        
+        copyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-clipboard-target');
+                const codeElement = document.querySelector(targetId);
+                const textToCopy = codeElement.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Change button icon temporarily
+                    const icon = button.querySelector('i');
+                    icon.classList.remove('fa-copy');
+                    icon.classList.add('fa-check');
+                    
+                    setTimeout(() => {
+                        icon.classList.remove('fa-check');
+                        icon.classList.add('fa-copy');
+                    }, 2000);
+                });
+            });
+        });
+
+        // Generate table of contents
+        const tocList = document.getElementById('toc-list');
+        const headings = document.querySelectorAll('.content-section h2');
+        
+        headings.forEach(heading => {
+            const id = heading.closest('.content-section').id;
+            if (id) {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            }
+        });
+
+        // TOC toggle in mobile view
+        const tocToggle = document.getElementById('toc-toggle');
+        const toc = document.getElementById('toc');
+        
+        tocToggle.addEventListener('click', () => {
+            toc.classList.toggle('minimized');
+        });
+
+        // Search functionality
+        const searchBtn = document.getElementById('search-btn');
+        const searchOverlay = document.getElementById('search-overlay');
+        const closeSearch = document.getElementById('close-search');
+        
+        searchBtn.addEventListener('click', () => {
+            searchOverlay.classList.add('show');
+            document.getElementById('search-input').focus();
+        });
+        
+        closeSearch.addEventListener('click', () => {
+            searchOverlay.classList.remove('show');
+        });
+        
+        // Close search on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('show')) {
+                searchOverlay.classList.remove('show');
+            }
+            
+            // Open search on Command/Ctrl + K
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                searchOverlay.classList.add('show');
+                document.getElementById('search-input').focus();
+            }
+        });
+
+        // Feedback functionality
+        const feedbackYes = document.getElementById('feedback-yes');
+        const feedbackNo = document.getElementById('feedback-no');
+        const feedbackToast = document.getElementById('feedback-toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastClose = document.getElementById('toast-close');
+        
+        feedbackYes.addEventListener('click', () => {
+            toastMessage.textContent = 'Thank you for your positive feedback!';
+            feedbackToast.classList.add('show');
+            setTimeout(() => feedbackToast.classList.remove('show'), 3000);
+        });
+        
+        feedbackNo.addEventListener('click', () => {
+            toastMessage.textContent = 'Thanks for your feedback. We\'ll try to improve!';
+            feedbackToast.classList.add('show');
+            setTimeout(() => feedbackToast.classList.remove('show'), 3000);
+        });
+        
+        toastClose.addEventListener('click', () => {
+            feedbackToast.classList.remove('show');
+        });
+
+        // Progress bar
+        const progressBar = document.getElementById('progress-bar');
+        
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        // Nav group toggling
+        const navGroupToggles = document.querySelectorAll('.nav-group-toggle');
+        
+        navGroupToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const navGroup = toggle.closest('.nav-group');
+                navGroup.classList.toggle('expanded');
+                
+                if (navGroup.classList.contains('expanded')) {
+                    toggle.classList.remove('fa-chevron-down');
+                    toggle.classList.add('fa-chevron-up');
+                } else {
+                    toggle.classList.remove('fa-chevron-up');
+                    toggle.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL without reloading the page
+                    history.pushState(null, null, targetId);
+                }
+                
+                // Close mobile menu if open
+                if (window.innerWidth < 768) {
+                    sidebarNav.classList.remove('show');
+                    mobileMenuToggle.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
